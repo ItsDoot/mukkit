@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "pw.dotdash.mukkit.mixin",
+  "refmap": "core.mixins.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "DedicatedServerMixin",
+    "MinecraftServerMixin",
+    "accessor.net.minecraft.entity.EntityAccessor",
+    "accessor.net.minecraft.entity.player.PlayerAbilitiesAccessor",
+    "accessor.net.minecraft.network.play.server.SPacketListHeaderFooterPacketAccessor",
+    "accessor.net.minecraft.util.FoodStatsAccessor",
+    "accessor.net.minecraft.world.GameRulesAccessor",
+    "api.DedicatedServerMixin_API",
+    "api.entity.EntityMixin_API",
+    "api.entity.LivingEntityMixin_API",
+    "api.entity.player.ServerPlayerEntityMixin_API",
+    "api.world.WorldMixin_API",
+    "api.world.border.WorldBorderMixin_API"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
