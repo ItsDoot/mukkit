@@ -7,3 +7,4 @@
 - [x] org.bukkit.entity.LivingEntity
 - [x] org.bukkit.entity.Player
 - [x] org.bukkit.World
+- [x] org.bukkit.WorldBorder
