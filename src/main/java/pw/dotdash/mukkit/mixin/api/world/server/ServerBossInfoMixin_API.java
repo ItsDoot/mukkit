@@ -16,8 +16,7 @@ import org.spongepowered.asm.mixin.*;
 import pw.dotdash.mukkit.bridge.boss.BarColorBridge;
 import pw.dotdash.mukkit.bridge.boss.BarStyleBridge;
 import pw.dotdash.mukkit.mixin.api.world.BossInfoMixin_API;
-import pw.dotdash.mukkit.util.BarFlagMapper;
-import pw.dotdash.mukkit.util.TypeConversions;
+import pw.dotdash.mukkit.util.BarFlagProperties;
 
 import java.util.Collection;
 import java.util.List;
@@ -96,17 +95,17 @@ public abstract class ServerBossInfoMixin_API extends BossInfoMixin_API implemen
 
     @Override
     public void removeFlag(BarFlag flag) {
-        BarFlagMapper.get(flag).set((ServerBossInfo) (Object) this, false);
+        BarFlagProperties.get(flag).set((ServerBossInfo) (Object) this, false);
     }
 
     @Override
     public void addFlag(BarFlag flag) {
-        BarFlagMapper.get(flag).set((ServerBossInfo) (Object) this, true);
+        BarFlagProperties.get(flag).set((ServerBossInfo) (Object) this, true);
     }
 
     @Override
     public boolean hasFlag(BarFlag flag) {
-        return BarFlagMapper.get(flag).get((ServerBossInfo) (Object) this);
+        return BarFlagProperties.get(flag).get((ServerBossInfo) (Object) this);
     }
 
     @Override
