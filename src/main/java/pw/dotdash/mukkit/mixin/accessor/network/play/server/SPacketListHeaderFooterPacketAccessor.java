@@ -1,4 +1,4 @@
-package pw.dotdash.mukkit.mixin.accessor.net.minecraft.network.play.server;
+package pw.dotdash.mukkit.mixin.accessor.network.play.server;
 
 import net.minecraft.network.play.server.SPlayerListHeaderFooterPacket;
 import net.minecraft.util.text.ITextComponent;

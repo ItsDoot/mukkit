@@ -8,17 +8,24 @@
   "mixins": [
     "DedicatedServerMixin",
     "MinecraftServerMixin",
-    "accessor.net.minecraft.entity.EntityAccessor",
-    "accessor.net.minecraft.entity.player.PlayerAbilitiesAccessor",
-    "accessor.net.minecraft.network.play.server.SPacketListHeaderFooterPacketAccessor",
-    "accessor.net.minecraft.util.FoodStatsAccessor",
-    "accessor.net.minecraft.world.GameRulesAccessor",
+    "accessor.entity.EntityAccessor",
+    "accessor.entity.player.PlayerAbilitiesAccessor",
+    "accessor.network.play.server.SPacketListHeaderFooterPacketAccessor",
+    "accessor.util.FoodStatsAccessor",
+    "accessor.world.GameRulesAccessor",
     "api.DedicatedServerMixin_API",
+    "api.MinecraftServerMixin_API",
+    "api.advancements.AdvancementMixin_API",
+    "api.advancements.AdvancementProgressMixin_API",
     "api.entity.EntityMixin_API",
     "api.entity.LivingEntityMixin_API",
     "api.entity.player.ServerPlayerEntityMixin_API",
+    "api.inventory.IInventoryMixin_API",
+    "api.world.BossInfoMixin_API",
+    "api.world.ServerWorldMixin_API",
     "api.world.WorldMixin_API",
-    "api.world.border.WorldBorderMixin_API"
+    "api.world.border.WorldBorderMixin_API",
+    "api.world.server.ServerBossInfoMixin_API"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -40,7 +40,7 @@ public final class MixinServiceModLauncherMukkit extends MixinServiceModLauncher
         public ContainerHandleModLauncherMukkit(String name) {
             super(name);
 
-            this.setAttribute(Constants.ManifestAttributes.MIXINCONNECTOR, "pw.dotdash.mukkit.launch.MukkitMixinConnector");
+            this.setAttribute(Constants.ManifestAttributes.MIXINCONNECTOR, "pw.dotdash.mukkit.modlauncher.launch.MukkitMixinConnector");
         }
     }
 }

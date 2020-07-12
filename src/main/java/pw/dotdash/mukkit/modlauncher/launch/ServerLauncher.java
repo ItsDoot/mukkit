@@ -1,4 +1,4 @@
-package pw.dotdash.mukkit.launch;
+package pw.dotdash.mukkit.modlauncher.launch;
 
 import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;

@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "pw.dotdash.mukkit.mixin.bridge",
+  "refmap": "bridge.mixins.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "DifficultyBridgeMixin_Bukkit",
+    "DifficultyBridgeMixin_Mojang",
+    "GameModeBridgeMixin_Bukkit",
+    "GameModeBridgeMixin_Mojang",
+    "HeightMapBridgeMixin_Bukkit",
+    "HeightMapBridgeMixin_Mojang",
+    "boss.BarColorBridgeMixin_Bukkit",
+    "boss.BarColorBridgeMixin_Mojang",
+    "boss.BarStyleBridgeMixin_Bukkit",
+    "boss.BarStyleBridgeMixin_Mojang"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

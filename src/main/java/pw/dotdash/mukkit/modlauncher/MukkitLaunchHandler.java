@@ -38,7 +38,7 @@ public class MukkitLaunchHandler implements ILaunchHandlerService {
     public Callable<Void> launchService(String[] arguments, ITransformingClassLoader launchClassLoader) {
         LogManager.getLogger("MukkitLauncher").info("Transitioning to ServerLauncher...");
         return () -> {
-            Class.forName("pw.dotdash.mukkit.launch.ServerLauncher", true, launchClassLoader.getInstance())
+            Class.forName("pw.dotdash.mukkit.modlauncher.launch.ServerLauncher", true, launchClassLoader.getInstance())
                     .getMethod("launch", String[].class)
                     .invoke(null, (Object) arguments);
             return null;

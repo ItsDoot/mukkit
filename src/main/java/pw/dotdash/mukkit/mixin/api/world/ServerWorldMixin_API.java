@@ -43,7 +43,9 @@ import org.bukkit.util.Consumer;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import org.spongepowered.asm.mixin.*;
-import pw.dotdash.mukkit.mixin.accessor.net.minecraft.world.GameRulesAccessor;
+import pw.dotdash.mukkit.bridge.DifficultyBridge;
+import pw.dotdash.mukkit.bridge.HeightMapBridge;
+import pw.dotdash.mukkit.mixin.accessor.world.GameRulesAccessor;
 import pw.dotdash.mukkit.util.TypeConversions;
 
 import javax.annotation.Nonnull;
@@ -120,7 +122,7 @@ public abstract class ServerWorldMixin_API extends WorldMixin_API implements Wor
         Preconditions.checkNotNull(heightMap, "heightMap");
 
         return this.shadow$getChunk(x >> 4, z >> 4)
-                .getTopBlockY(TypeConversions.fromBukkit(heightMap), x, z);
+                .getTopBlockY(((HeightMapBridge) (Object) heightMap).bridge$toMojang(), x, z);
     }
 
     @Override
@@ -759,11 +761,6 @@ public abstract class ServerWorldMixin_API extends WorldMixin_API implements Wor
         return TypeConversions.fromMojang(this.shadow$getDimension().getType());
     }
 
-    @Intrinsic
-    public long api$getSeed() {
-        return this.shadow$getSeed();
-    }
-
     /**
      * TODO
      */
@@ -1020,12 +1017,12 @@ public abstract class ServerWorldMixin_API extends WorldMixin_API implements Wor
 
     @Override
     public void setDifficulty(Difficulty difficulty) {
-        this.shadow$getWorldInfo().setDifficulty(TypeConversions.fromBukkit(difficulty));
+        this.shadow$getWorldInfo().setDifficulty(((DifficultyBridge) (Object) difficulty).bridge$toMojang());
     }
 
     @Override
     public Difficulty getDifficulty() {
-        return TypeConversions.fromMojang(this.shadow$getWorldInfo().getDifficulty());
+        return ((DifficultyBridge) (Object) this.shadow$getWorldInfo().getDifficulty()).bridge$toBukkit();
     }
 
     /**

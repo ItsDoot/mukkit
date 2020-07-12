@@ -2,7 +2,6 @@ package pw.dotdash.mukkit.mixin.api.entity.player;
 
 import com.google.common.base.Preconditions;
 import com.google.common.io.BaseEncoding;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -34,9 +33,11 @@ import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.spongepowered.asm.mixin.*;
-import pw.dotdash.mukkit.mixin.accessor.net.minecraft.entity.player.PlayerAbilitiesAccessor;
-import pw.dotdash.mukkit.mixin.accessor.net.minecraft.network.play.server.SPacketListHeaderFooterPacketAccessor;
-import pw.dotdash.mukkit.mixin.accessor.net.minecraft.util.FoodStatsAccessor;
+import pw.dotdash.mukkit.bridge.GameModeBridge;
+import pw.dotdash.mukkit.extra.entity.PlayerExtra;
+import pw.dotdash.mukkit.mixin.accessor.entity.player.PlayerAbilitiesAccessor;
+import pw.dotdash.mukkit.mixin.accessor.network.play.server.SPacketListHeaderFooterPacketAccessor;
+import pw.dotdash.mukkit.mixin.accessor.util.FoodStatsAccessor;
 import pw.dotdash.mukkit.util.TypeConversions;
 
 import java.net.InetSocketAddress;
@@ -47,9 +48,9 @@ import java.util.Optional;
 
 @Mixin(ServerPlayerEntity.class)
 @Implements(@Interface(iface = Player.class, prefix = "player$"))
-public abstract class ServerPlayerEntityMixin_API extends PlayerEntityMixin_API implements Player {
+public abstract class ServerPlayerEntityMixin_API extends PlayerEntityMixin_API implements PlayerExtra {
 
-    // --- Mixin'd Fields ---
+    // --- Added Fields ---
 
     /**
      * TODO proper legacy text serialization
@@ -57,13 +58,23 @@ public abstract class ServerPlayerEntityMixin_API extends PlayerEntityMixin_API 
     private StringTextComponent playerListHeader = null;
     private StringTextComponent playerListFooter = null;
 
+    private boolean healthScaled = false;
+    private double healthScale = 20;
+
     // --- Shadowed Fields ---
 
-    @Shadow public ServerPlayNetHandler connection;
-    @Shadow private int lastExperience;
-    @Shadow private String language;
-    @Shadow @Final public MinecraftServer server;
-    @Shadow @Final public PlayerInteractionManager interactionManager;
+    @Shadow
+    public ServerPlayNetHandler connection;
+    @Shadow
+    private int lastExperience;
+    @Shadow
+    private String language;
+    @Shadow
+    @Final
+    public MinecraftServer server;
+    @Shadow
+    @Final
+    public PlayerInteractionManager interactionManager;
 
     // --- Shadowed Methods ---
 
@@ -695,36 +706,39 @@ public abstract class ServerPlayerEntityMixin_API extends PlayerEntityMixin_API 
 
     }
 
-    /**
-     * TODO
-     */
     @Override
     public boolean isHealthScaled() {
-        return false;
+        return this.healthScaled;
     }
 
-    /**
-     * TODO
-     */
     @Override
     public void setHealthScaled(boolean scale) {
-
+        this.healthScaled = scale;
     }
 
-    /**
-     * TODO
-     */
     @Override
     public void setHealthScale(double scale) throws IllegalArgumentException {
+        Preconditions.checkArgument(scale >= 0, "Scale must not be negative");
 
+        this.healthScaled = true;
+        this.healthScale = scale;
+    }
+
+    @Override
+    public double getHealthScale() {
+        return this.healthScale;
     }
 
     /**
-     * TODO
+     * TODO update health to scaled
      */
     @Override
-    public double getHealthScale() {
-        return 0;
+    public double getScaledHealth() {
+        if (!this.isHealthScaled()) {
+            return this.getHealth();
+        }
+
+        return this.getHealth() * this.getHealthScale() / this.getMaxHealth();
     }
 
     @Override
@@ -845,7 +859,7 @@ public abstract class ServerPlayerEntityMixin_API extends PlayerEntityMixin_API 
                 (float) extra,
                 count
         );
-        this.connection.sendPacket(packet);
+        // this.connection.sendPacket(packet);
     }
 
     /**
@@ -1328,12 +1342,12 @@ public abstract class ServerPlayerEntityMixin_API extends PlayerEntityMixin_API 
 
     @Override
     public GameMode getGameMode() {
-        return TypeConversions.fromMojang(this.interactionManager.getGameType());
+        return ((GameModeBridge) (Object) this.interactionManager.getGameType()).bridge$toBukkit();
     }
 
     @Override
     public void setGameMode(GameMode mode) {
-        this.interactionManager.setGameType(TypeConversions.fromBukkit(mode));
+        this.interactionManager.setGameType(((GameModeBridge) (Object) mode).bridge$toMojang());
     }
 
     @Override

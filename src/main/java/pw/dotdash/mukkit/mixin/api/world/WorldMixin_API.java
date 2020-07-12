@@ -11,8 +11,8 @@ import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.storage.WorldInfo;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.bukkit.World;
+import org.spongepowered.asm.mixin.*;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -20,6 +20,7 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 @Mixin(net.minecraft.world.World.class)
+@Implements(@Interface(iface = World.class, prefix = "api$"))
 public abstract class WorldMixin_API {
 
     // --- Shadowed Methods ---
@@ -78,5 +79,10 @@ public abstract class WorldMixin_API {
     @Shadow
     public abstract Random shadow$getRandom();
 
+    // --- World Implementation ---
 
+    @Intrinsic
+    public long api$getSeed() {
+        return this.shadow$getSeed();
+    }
 }

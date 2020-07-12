@@ -27,7 +27,7 @@ public abstract class MinecraftServerMixin {
                     from = @At(value = "INVOKE", target = "Lnet/minecraft/world/storage/SaveFormat;isOldMapFormat(Ljava/lang/String;)Z"),
                     to = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setUserMessage(Lnet/minecraft/util/text/ITextComponent;)V")
             ),
-            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;)V"))
+            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;)V", remap = false))
     private void logConvertingMapName(Logger logger, String message, String worldNameIn) {
         logger.info(message + " Map: " + worldNameIn);
     }

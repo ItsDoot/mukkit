@@ -1,4 +1,4 @@
-package pw.dotdash.mukkit.mixin.accessor.net.minecraft.world;
+package pw.dotdash.mukkit.mixin.accessor.world;
 
 import net.minecraft.world.GameRules;
 import org.spongepowered.asm.mixin.Mixin;

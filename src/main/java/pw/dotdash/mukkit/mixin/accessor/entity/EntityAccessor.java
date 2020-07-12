@@ -1,4 +1,4 @@
-package pw.dotdash.mukkit.mixin.accessor.net.minecraft.entity;
+package pw.dotdash.mukkit.mixin.accessor.entity;
 
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;

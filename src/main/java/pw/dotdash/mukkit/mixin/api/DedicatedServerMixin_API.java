@@ -53,23 +53,40 @@ import java.util.stream.Collectors;
  * Implements {@link org.bukkit.Server} on {@link net.minecraft.server.dedicated.DedicatedServer}.
  */
 @Mixin(DedicatedServer.class)
-public abstract class DedicatedServerMixin_API implements ServerExtra {
+public abstract class DedicatedServerMixin_API extends MinecraftServerMixin_API implements ServerExtra {
 
-    @Shadow @Final private ServerPropertiesProvider settings;
-
-    @Shadow public abstract DedicatedPlayerList shadow$getPlayerList();
-
-    @Shadow public abstract ServerProperties shadow$getServerProperties();
-
-    @Shadow public abstract String shadow$getHostname();
-
-    @Shadow public abstract void shadow$stopServer();
+    // --- Added Fields ---
 
     private final Logger api$logger = Logger.getLogger("Mukkit");
 
     private final MukkitCommandMap api$commandMap = new MukkitCommandMap(this);
     private final PluginManager api$pluginManager = new SimplePluginManager(this, this.api$commandMap);
     private final ServicesManager api$servicesManager = new SimpleServicesManager();
+
+    // --- Shadowed Fields ---
+
+    @Shadow
+    @Final
+    private ServerPropertiesProvider settings;
+
+    // --- Shadowed Methods ---
+
+    @Shadow
+    public abstract DedicatedPlayerList shadow$getPlayerList();
+
+    @Shadow
+    public abstract ServerProperties shadow$getServerProperties();
+
+    @Shadow
+    public abstract String shadow$getHostname();
+
+    @Shadow
+    public abstract void shadow$stopServer();
+
+    @Shadow
+    public abstract void setPlayerIdleTimeout(int idleTimeout);
+
+    // --- ServerExtra Implementation ---
 
     @Override
     public void loadPlugins() {
@@ -116,10 +133,14 @@ public abstract class DedicatedServerMixin_API implements ServerExtra {
         }
     }
 
+    /**
+     * TODO
+     */
     @Override
     public void disablePlugins() {
-
     }
+
+    // --- Server Implementation ---
 
     @Override
     @NotNull
@@ -343,8 +364,7 @@ public abstract class DedicatedServerMixin_API implements ServerExtra {
      */
     @Override
     public BukkitScheduler getScheduler() {
-        // TODO
-        throw new AbstractMethodError();
+        return null;
     }
 
     @Override
@@ -357,7 +377,13 @@ public abstract class DedicatedServerMixin_API implements ServerExtra {
      */
     @Override
     public List<World> getWorlds() {
-        return null;
+        List<World> worlds = new ArrayList<>();
+
+        for (ServerWorld world : this.shadow$getWorlds()) {
+            worlds.add((World) world);
+        }
+
+        return worlds;
     }
 
     /**
@@ -389,6 +415,14 @@ public abstract class DedicatedServerMixin_API implements ServerExtra {
      */
     @Override
     public World getWorld(String name) {
+        Preconditions.checkNotNull(name, "name");
+
+        for (ServerWorld world : this.shadow$getWorlds()) {
+            if (name.equals(world.getWorldInfo().getWorldName())) {
+                return (World) world;
+            }
+        }
+
         return null;
     }
 
@@ -433,11 +467,9 @@ public abstract class DedicatedServerMixin_API implements ServerExtra {
         return null;
     }
 
-    /**
-     * TODO
-     */
     @Override
     public void reload() {
+        throw new UnsupportedOperationException("Mukkit doesn't support hot-reloading");
     }
 
     /**
@@ -788,12 +820,12 @@ public abstract class DedicatedServerMixin_API implements ServerExtra {
 
     @Override
     public boolean isPrimaryThread() {
-        return ((MinecraftServer) (Object) this).isOnExecutionThread() || ((MinecraftServer) (Object) this).isServerStopped();
+        return ((MinecraftServer) (Object) this).isOnExecutionThread() || this.shadow$isServerStopped();
     }
 
     @Override
     public String getMotd() {
-        return ((DedicatedServer) (Object) this).getMOTD();
+        return this.shadow$getMOTD();
     }
 
     @Override
@@ -848,12 +880,12 @@ public abstract class DedicatedServerMixin_API implements ServerExtra {
 
     @Override
     public int getIdleTimeout() {
-        return ((DedicatedServer) (Object) this).getMaxPlayerIdleMinutes();
+        return this.getMaxPlayerIdleMinutes();
     }
 
     @Override
     public void setIdleTimeout(int threshold) {
-        ((DedicatedServer) (Object) this).setPlayerIdleTimeout(threshold);
+        this.setPlayerIdleTimeout(threshold);
     }
 
     /**

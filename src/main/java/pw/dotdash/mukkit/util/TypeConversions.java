@@ -10,9 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.GameType;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.gen.Heightmap;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
@@ -26,89 +24,9 @@ import java.util.Locale;
 
 public final class TypeConversions {
 
-    public static Difficulty fromMojang(net.minecraft.world.Difficulty difficulty) {
-        switch (difficulty) {
-            case PEACEFUL:
-                return Difficulty.PEACEFUL;
-            case EASY:
-                return Difficulty.EASY;
-            case NORMAL:
-                return Difficulty.NORMAL;
-            case HARD:
-                return Difficulty.HARD;
-            default:
-                throw new IllegalArgumentException("Unhandled enum value: " + difficulty);
-        }
-    }
-
-    public static net.minecraft.world.Difficulty fromBukkit(Difficulty difficulty) {
-        switch (difficulty) {
-            case PEACEFUL:
-                return net.minecraft.world.Difficulty.PEACEFUL;
-            case EASY:
-                return net.minecraft.world.Difficulty.EASY;
-            case NORMAL:
-                return net.minecraft.world.Difficulty.NORMAL;
-            case HARD:
-                return net.minecraft.world.Difficulty.HARD;
-            default:
-                throw new IllegalArgumentException("Unhandled enum value: " + difficulty);
-        }
-    }
-
     public static World.Environment fromMojang(DimensionType type) {
         ResourceLocation location = Preconditions.checkNotNull(net.minecraft.util.registry.Registry.DIMENSION_TYPE.getKey(type));
         return World.Environment.valueOf(location.getPath().toUpperCase());
-    }
-
-    public static Heightmap.Type fromBukkit(HeightMap map) {
-        switch (map) {
-            case MOTION_BLOCKING:
-                return Heightmap.Type.MOTION_BLOCKING;
-            case MOTION_BLOCKING_NO_LEAVES:
-                return Heightmap.Type.MOTION_BLOCKING_NO_LEAVES;
-            case OCEAN_FLOOR:
-                return Heightmap.Type.OCEAN_FLOOR;
-            case OCEAN_FLOOR_WG:
-                return Heightmap.Type.OCEAN_FLOOR_WG;
-            case WORLD_SURFACE:
-                return Heightmap.Type.WORLD_SURFACE;
-            case WORLD_SURFACE_WG:
-                return Heightmap.Type.WORLD_SURFACE_WG;
-            default:
-                throw new IllegalArgumentException("Unhandled enum value: " + map);
-        }
-    }
-
-    public static GameMode fromMojang(GameType type) {
-        switch (type) {
-            case NOT_SET:
-            case SURVIVAL:
-                return GameMode.SURVIVAL;
-            case CREATIVE:
-                return GameMode.CREATIVE;
-            case ADVENTURE:
-                return GameMode.ADVENTURE;
-            case SPECTATOR:
-                return GameMode.SPECTATOR;
-            default:
-                throw new IllegalArgumentException("Unhandled enum value: " + type);
-        }
-    }
-
-    public static GameType fromBukkit(GameMode mode) {
-        switch (mode) {
-            case CREATIVE:
-                return GameType.CREATIVE;
-            case SURVIVAL:
-                return GameType.SURVIVAL;
-            case ADVENTURE:
-                return GameType.ADVENTURE;
-            case SPECTATOR:
-                return GameType.SPECTATOR;
-            default:
-                throw new IllegalArgumentException("Unhandled enum value: " + mode);
-        }
     }
 
     public static Item fromBukkit(Material material) {

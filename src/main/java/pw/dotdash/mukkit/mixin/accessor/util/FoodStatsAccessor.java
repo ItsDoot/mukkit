@@ -1,4 +1,4 @@
-package pw.dotdash.mukkit.mixin.accessor.net.minecraft.util;
+package pw.dotdash.mukkit.mixin.accessor.util;
 
 import net.minecraft.util.FoodStats;
 import org.spongepowered.asm.mixin.Mixin;

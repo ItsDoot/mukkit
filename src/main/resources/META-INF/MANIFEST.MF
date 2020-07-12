@@ -1,2 +1,1 @@
-MixinConfigs: core.mixins.json
 MixinConnector: MukkitMixinConnector
